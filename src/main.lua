@@ -19,9 +19,9 @@ function love.load()
 
     love.graphics.setDefaultFilter('nearest', "nearest")
 
-    smallFont = love.graphics.newFont('../resources/prstartk.ttf', 8)
+    smallFont = love.graphics.newFont('/resources/prstartk.ttf', 8)
 
-    scoreFont = love.graphics.newFont('../resources/prstartk.ttf', 24)
+    scoreFont = love.graphics.newFont('/resources/prstartk.ttf', 24)
     love.graphics.setFont(smallFont)
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WIDTH, HEIGHT, {
