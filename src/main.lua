@@ -1,7 +1,10 @@
--- love 2d engine https://love2d.org/wiki/love
+-- love 2d game engine https://love2d.org/wiki/love
+
 
 -- https://github.com/Ulydev/push - lib
-push = require "push"
+push = require 'push'
+-- https://github.com/vrld/hump/blob/master/class.lua
+Class = require 'class'
 
 WIDTH = 1200
 HEIGHT = 720
@@ -27,7 +30,6 @@ function love.load()
     smallFont = love.graphics.newFont('/resources/prstartk.ttf', 8)
 
     scoreFont = love.graphics.newFont('/resources/prstartk.ttf', 24)
-    love.graphics.setFont(smallFont)
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WIDTH, HEIGHT, {
         fullscreen = false,
@@ -63,18 +65,22 @@ end
 
 function love.draw()
     push:apply('start')
+    love.graphics.setFont(smallFont)
     love.graphics.clear(40/255, 45/255, 52/255, 255/255)
     love.graphics.printf(
         'Boobi Pong 2',
         0,
-        VIRTUAL_HEIGHT - 12,
+        5,
         VIRTUAL_WIDTH,
         'center'
-
     )
 
-    love.graphics.rectangle('fill', paddle2X, paddle2Y, 5, 20)
-    love.graphics.rectangle('fill',paddle1X, paddle1Y, 5, 20)
+    love.graphics.setFont(scoreFont)
+    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 55, VIRTUAL_HEIGHT / 3 + 20)
+    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 35, VIRTUAL_HEIGHT / 3 + 20)
 
+    love.graphics.rectangle('fill',paddle1X, paddle1Y, 5, 20)
+    love.graphics.rectangle('fill', paddle2X, paddle2Y, 5, 20)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH/2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
     push:apply('end') 
 end
