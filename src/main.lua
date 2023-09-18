@@ -5,6 +5,9 @@
 push = require 'push'
 -- https://github.com/vrld/hump/blob/master/class.lua
 Class = require 'class'
+-- classes
+require 'Paddle'
+require 'Ball'
 
 WIDTH = 1200
 HEIGHT = 720
