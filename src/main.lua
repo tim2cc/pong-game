@@ -14,21 +14,15 @@ HEIGHT = 720
 
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
-
 PADDLE_SPEED = 200
 
 function love.load()
-    -- players variables
     player1Score = 0
     player2Score = 0
-    paddle1X = 10   
-    paddle1Y = VIRTUAL_HEIGHT - 50
-    paddle2X = VIRTUAL_WIDTH - 14
-    paddle2Y = 50
-    
-
     -- graphics rendering
     love.graphics.setDefaultFilter('nearest', "nearest")
+    --generate the seed
+    math.randomseed(os.time())
     -- font setup
     smallFont = love.graphics.newFont('/resources/prstartk.ttf', 8)
 
@@ -38,23 +32,41 @@ function love.load()
         fullscreen = false,
         resizable = false,
         vsync = true
-    })   
+    })
+    
+    player1 = Paddle(10, 30, 5, 20)
+    player2 = Paddle(VIRTUAL_WIDTH - 14, VIRTUAL_HEIGHT - 35, 5, 20)
+
+    ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
+
+    gameState = 'start'
 end
 
 function love.update(dt)
     -- paddle 1 movenment
     if love.keyboard.isDown('a') then
-        paddle1Y = paddle1Y + -PADDLE_SPEED * dt
+        player1.dy = -PADDLE_SPEED
     elseif love.keyboard.isDown('z') then
-        paddle1Y = paddle1Y + PADDLE_SPEED * dt
+        player1.dy = PADDLE_SPEED
+    else 
+        player1.dy = 0
     end
     
     -- paddle 2 movenment
     if love.keyboard.isDown('k') then
-        paddle2Y = paddle2Y + -PADDLE_SPEED * dt
+        player2.dy = -PADDLE_SPEED
     elseif love.keyboard.isDown('m') then
-        paddle2Y = paddle2Y + PADDLE_SPEED * dt
+        player2.dy = PADDLE_SPEED
+    else
+        player2.dy = 0
     end
+
+    if gameState == 'play' then
+        ball:update(dt)
+    end
+
+    player1:update(dt)
+    player2:update(dt)
 end
 
 
@@ -62,6 +74,13 @@ function love.keypressed(key)
 
     if key == "escape" then
         love.event.quit()
+    elseif key == 'enter' or key == 'space' then
+        if gameState == 'start' then
+            gameState = 'play'
+        else
+            gameState = 'start'
+            ball:reset()
+        end
     end
     
 end
@@ -82,8 +101,10 @@ function love.draw()
     love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 55, VIRTUAL_HEIGHT / 3 + 20)
     love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 35, VIRTUAL_HEIGHT / 3 + 20)
 
-    love.graphics.rectangle('fill',paddle1X, paddle1Y, 5, 20)
-    love.graphics.rectangle('fill', paddle2X, paddle2Y, 5, 20)
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH/2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
+    player1:render()
+    player2:render()
+
+    ball:render()
+
     push:apply('end') 
 end

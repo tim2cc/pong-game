@@ -7,7 +7,7 @@ function  Ball:init(x,y, width, height)
     self.height = height
     
 
-    self.dx = math.random(-50, 50)
+    self.dx = math.random(-150, 150)
     self.dy = math.random(2) == 1 and -100 or 100
 end
 
@@ -20,7 +20,7 @@ function Ball:reset()
 end
 
 function Ball:update(dt)
-    self.x = self.x + self.dx * dt 
+    self.x = self.x + self.dx * dt
     self.y = self.y + self.dy * dt
 end
 
