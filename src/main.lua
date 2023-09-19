@@ -33,6 +33,8 @@ function love.load()
         resizable = false,
         vsync = true
     })
+
+    love.window.setTitle('Boobi Pong 2')
     
     player1 = Paddle(10, 30, 5, 20)
     player2 = Paddle(VIRTUAL_WIDTH - 14, VIRTUAL_HEIGHT - 35, 5, 20)
@@ -106,5 +108,13 @@ function love.draw()
 
     ball:render()
 
+    displayFPS()
+
     push:apply('end') 
+end
+
+function displayFPS()
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(255, 0, 0, 255)
+    love.graphics.print('FPS: '.. tostring(love.timer.getFPS()), 10, 10)
 end
