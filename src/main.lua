@@ -24,9 +24,9 @@ function love.load()
     --generate the seed
     math.randomseed(os.time())
     -- font setup
-    smallFont = love.graphics.newFont('/resources/prstartk.ttf', 8)
+    smallFont = love.graphics.newFont('/resources/font.ttf', 8)
 
-    scoreFont = love.graphics.newFont('/resources/prstartk.ttf', 24)
+    scoreFont = love.graphics.newFont('/resources/font.ttf', 24)
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WIDTH, HEIGHT, {
         fullscreen = false,
@@ -37,7 +37,7 @@ function love.load()
     love.window.setTitle('Boobi Pong 2')
     
     player1 = Paddle(10, 30, 5, 20)
-    player2 = Paddle(VIRTUAL_WIDTH - 14, VIRTUAL_HEIGHT - 35, 5, 20)
+    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
 
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
@@ -64,9 +64,41 @@ function love.update(dt)
     end
 
     if gameState == 'play' then
+        if ball:collides(player1) then
+            ball.dx = -ball.dx * 1.03
+            ball.x = player1.x + 5
+
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+
+        if ball:collides(player2) then
+            ball.dx = -ball.dx * 1.03
+            ball.x = player1.x - 4
+
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+    end
+        
+        if ball.y <= 0 then
+            ball.y = 0
+            ball.dy = -ball.dy
+        end
+
+        if ball.y >= VIRTUAL_HEIGHT - 4 then
+            ball.y = VIRTUAL_HEIGHT - 4
+            ball.dy = -ball.dy
+        end
+    if gameState == 'play' then
         ball:update(dt)
     end
-
     player1:update(dt)
     player2:update(dt)
 end
@@ -115,6 +147,6 @@ end
 
 function displayFPS()
     love.graphics.setFont(smallFont)
-    love.graphics.setColor(255, 0, 0, 255)
-    love.graphics.print('FPS: '.. tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.setColor(255, 0, 0, 255) 
+    love.graphics.print('FPS: '.. tostring(love.timer.getFPS()), 8, 8)
 end
